@@ -1,54 +1,120 @@
-# React + TypeScript + Vite
+# React MSAL Authentication with Protected Routes
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project demonstrates Microsoft Authentication Library (MSAL) integration with React, featuring protected routes and secure API calls to a FastAPI backend.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Microsoft Authentication Library (MSAL) integration
+- Protected routes with authentication
+- Secure API calls with access tokens
+- Redirect-based authentication flow
+- TypeScript support
+- Vite as build tool
 
-## Expanding the ESLint configuration
+## Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Node.js (v14 or higher)
+- npm or yarn
+- Azure AD application registration
+- FastAPI backend with MSAL integration
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Azure AD Setup
+
+1. Go to the [Azure Portal](https://portal.azure.com)
+2. Navigate to Azure Active Directory
+3. Register a new application:
+   - Name: Your app name
+   - Supported account types: Choose based on your needs
+   - Redirect URI: `http://localhost:5173` (for development)
+4. Note down the following values:
+   - Application (client) ID
+   - Directory (tenant) ID
+   - API scope (if using custom API)
+
+## Environment Setup
+
+1. Copy `.env.example` to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Update the `.env` file with your Azure AD values:
+   ```
+   VITE_MSAL_CLIENT_ID=your_client_id_here
+   VITE_MSAL_TENANT_ID=your_tenant_id_here
+   VITE_MSAL_REDIRECT_URI=http://localhost:5173
+   VITE_API_SCOPE=api://your_api_scope/access_as_user
+   VITE_API_ENDPOINT=http://localhost:8000
+   ```
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd react-msal
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+## Development
+
+Start the development server:
+```bash
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The application will be available at `http://localhost:5173`
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Project Structure
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
 ```
+src/
+├── components/
+│   └── ProtectedRoute.tsx    # Protected route wrapper component
+├── pages/
+│   ├── Login.tsx            # Login page component
+│   └── Protected.tsx        # Protected page with API integration
+├── config/
+│   └── authConfig.ts        # MSAL configuration
+├── App.tsx                  # Main application component
+└── main.tsx                # Application entry point
+```
+
+## Authentication Flow
+
+1. User clicks "Sign in with Microsoft"
+2. Redirected to Microsoft login page
+3. After successful login, redirected back to the application
+4. Access token is automatically acquired and stored
+5. Protected routes are accessible
+6. API calls include the access token in Authorization header
+
+## API Integration
+
+The protected page (`Protected.tsx`) demonstrates how to:
+1. Acquire an access token silently
+2. Make authenticated API calls
+3. Handle API responses and errors
+
+## Security Considerations
+
+- Access tokens are stored in session storage
+- Protected routes redirect to login if not authenticated
+- API calls include proper authorization headers
+- Environment variables for sensitive configuration
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
