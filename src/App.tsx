@@ -5,6 +5,7 @@ import { msalConfig } from "./config/authConfig";
 import { Login } from "./pages/Login";
 import { Protected } from "./pages/Protected";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { PublicRoute } from "./components/PublicRoute";
 import { AuthProvider } from "./context/AuthContext";
 import { useEffect, useState } from "react";
 
@@ -55,7 +56,9 @@ function App() {
             <MsalProvider instance={msalInstance}>
                 <AuthProvider>
                     <Routes>
-                        <Route path="/login" element={<Login />} />
+                        <Route element={<PublicRoute />}>
+                            <Route path="/login" element={<Login />} />
+                        </Route>
                         <Route element={<ProtectedRoute />}>
                             <Route path="/protected" element={<Protected />} />
                         </Route>

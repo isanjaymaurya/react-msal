@@ -78,7 +78,7 @@ export const Protected = () => {
 
     return (
         <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+            <div>
                 <h2>Protected Page</h2>
                 <button onClick={handleLogout}>Logout</button>
             </div>
